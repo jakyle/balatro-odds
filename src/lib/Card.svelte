@@ -1,12 +1,10 @@
 <script lang="ts">
-	import type { ComponentType } from "svelte";
-	import Spade from "./suites/Spade.svelte";
-	import Club from "./suites/Club.svelte";
-	import Heart from "./suites/Heart.svelte";
-	import Diamond from "./suites/Diamond.svelte";
+	import type { Suite, Value } from './models/suite';
+	import SuiteSymbol from './suites/SuiteSymbol.svelte';
+	import ValueComponent from './values/Value.svelte';
 
-	export let suite: 'spades' | 'hearts' | 'diamonds' | 'clubs';
-	export let value: '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A';
+	export let suite: Suite;
+	export let value: Value;
 
 	const suiteColor: Record<typeof suite, string> = {
 		spades: 'text-black',
@@ -14,46 +12,26 @@
 		hearts: 'text-red-500',
 		diamonds: 'text-red-500'
 	};
-
-	const suiteSymbol: Record<typeof suite, ComponentType> = {
-		spades: Spade,
-		clubs: Club,
-		hearts: Heart,
-		diamonds: Diamond
-	};
 </script>
 
-<div class="flex py-4 w-96 aspect-2/3 bg-white rounded-xl shadow hover:shadow-xl transition-all hover:scale-105 {suiteColor[suite]}">
-	<div class="size-full flex py-2 justify-center items-center relative">
-
-		<div class="absolute left-4 top-0 flex items-center flex-col text-3xl font-bold gap-0.5">
+<div
+	class="flex aspect-2/3 w-96 rounded-xl bg-white py-2 shadow transition-all hover:scale-105 hover:shadow-xl {suiteColor[
+		suite
+	]}"
+>
+	<div class="flex size-full py-2">
+		<div class="flex flex-none flex-col items-center gap-0.5 pl-3 text-3xl font-bold">
 			<span>{value}</span>
-			<span>
-				<svelte:component this={suiteSymbol[suite]} class="size-8" />
-			</span>
+			<SuiteSymbol {suite} class="size-8" />
 		</div>
 
-		<div class="flex justify-center items-center aspect-2/3 w-5/6">
-
-			{#if value === 'A'}
-				<svelte:component this={suiteSymbol[suite]} class="size-2/6" />
-			{:else if value === '4'}
-				<div class="size-full grid grid-cols-[auto_auto] justify-between content-between">
-					{#each Array.from({length: 4}) as _}
-						<svelte:component this={suiteSymbol[suite]} class="size-20"/>
-					{/each}
-				</div>
-			{:else}
-				<svelte:component this={suiteSymbol[suite]} class="size-2/3" />
-			{/if}
-
+		<div class="flex-1 py-4">
+			<ValueComponent {value} {suite} />
 		</div>
-		
 
-		<div class="absolute right-4 bottom-0 rotate-180 flex items-center flex-col text-3xl font-bold gap-0.5">
+		<div class="flex flex-none rotate-180 flex-col items-center gap-0.5 pl-3 text-3xl font-bold">
 			<span>{value}</span>
-			<span><svelte:component this={suiteSymbol[suite]} class="size-8" /></span>
+			<SuiteSymbol {suite} class="size-8" />
 		</div>
-
 	</div>
 </div>
