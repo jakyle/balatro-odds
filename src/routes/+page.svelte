@@ -1,2 +1,7 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import Card from "$lib/Card.svelte";
+
+</script>
+<div class="bg-teal-500 w-screen h-screen flex justify-center items-center">
+	<Card suite="diamonds" value="4" />
+</div>
