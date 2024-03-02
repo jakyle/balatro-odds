@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { Suite, Value } from "$lib/models/suite";
+	import type { Value } from "$lib/models/value";
+	import type { Card } from "$lib/models/card";
 	import type { ComponentType } from "svelte";
 	import Four from "./Four.svelte";
 	import Two from "./Two.svelte";
@@ -12,8 +13,8 @@
 	import Nine from "./Nine.svelte";
 	import Ten from "./Ten.svelte";
 
-	export let value: Value;
-	export let suite: Suite
+	export let card: Card
+	let { value, suite } = card;
 
 	const valueMap: Record<Value, ComponentType> = {
 		'2': Two,
@@ -32,4 +33,4 @@
 	};
 </script>
 
-<svelte:component this={valueMap[value]} {value} {suite} />
+<svelte:component this={valueMap[value]} suite={suite} />

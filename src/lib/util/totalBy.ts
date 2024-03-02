@@ -1,0 +1,1 @@
+export const totalBy = <T>(arr: T[], key: keyof T, val: string | number | boolean) => arr.filter((x: T) => x[key] === val).length;

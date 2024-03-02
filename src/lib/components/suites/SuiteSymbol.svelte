@@ -4,10 +4,10 @@
 	import Club from './Club.svelte';
 	import Heart from './Heart.svelte';
 	import Diamond from './Diamond.svelte';
-	import type { Suite } from '../models/suite';
+	import type { Suite } from '$lib/models/suite';
 
 	let suite: Suite
-	let classes: string
+	let classes: string = ""
 
 	const suiteSymbol: Record<Suite, ComponentType> = {
 		spades: Spade,
