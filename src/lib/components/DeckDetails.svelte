@@ -12,13 +12,13 @@
 </script>
 
 
-<div class="grid w-3/4 grid-cols-[auto_1fr] grid-rows-4 text-xl">
+<div class="grid w-3/4 grid-cols-[auto_1fr] grid-rows-4 text-2xl">
     <div class="flex col-start-1 row-span-4 row-start-1 w-72 bg-slate-800 p-4">
 		<div class="flex-1 flex flex-col"></div>
 		<ul class="flex-none flex flex-col gap-2">
 			{#each valueTotals as [value, total]}
-				<li class="flex flex-row gap-4 items-center">
-					<span class="flex items-center justify-center rounded-3xl w-8 h-6 text-bold bg-slate-500 text-slate-200">{value}</span>
+				<li class="flex flex-row gap-6 items-center">
+					<span class="flex items-center justify-center rounded-3xl w-10 h-8 text-bold bg-slate-500 text-slate-200">{value}</span>
 					<span class="text-white">{total}</span>
 				</li>
 			{/each}
