@@ -1,31 +1,44 @@
 <script lang="ts">
+	import type { Card } from '$lib/models/card';
 	import type { Deck } from '$lib/models/deck';
-	import type { Value } from '$lib/models/value';
+	import CardRowDetail from './CardRowDetail.svelte';
+	import DeckMeta from './DeckMeta.svelte';
 
 	export let deck: Deck;
 
-	$: valueTotals = Object.entries(deck.cards.reduce((acc, curr) => {
-		acc[curr.value] = (acc[curr.value] ?? 0) + 1;
-		return acc;
-	}, {} as Record<Value, number>));
+	$: discards = deck.discard;
 
+	const hasSameCard = (card: Card) => discards.some(discard => discard.suite === card.suite && discard.value === card.value);
+
+	$: suites = [
+		{
+			row: 'row-start-1',
+			cards: deck.cardsBySuite('spades')
+		},
+		{
+			row: 'row-start-2',
+			cards: deck.cardsBySuite('hearts')
+		},
+		{
+			row: 'row-start-3',
+			cards: deck.cardsBySuite('clubs')
+		},
+		{
+			row: 'row-start-4',
+			cards: deck.cardsBySuite('diamonds')
+		} 
+	];
 </script>
 
 
-<div class="grid w-3/4 grid-cols-[auto_1fr] grid-rows-4 text-2xl">
-    <div class="flex col-start-1 row-span-4 row-start-1 w-72 bg-slate-800 p-4">
-		<div class="flex-1 flex flex-col"></div>
-		<ul class="flex-none flex flex-col gap-2">
-			{#each valueTotals as [value, total]}
-				<li class="flex flex-row gap-6 items-center">
-					<span class="flex items-center justify-center rounded-3xl w-10 h-8 text-bold bg-slate-500 text-slate-200">{value}</span>
-					<span class="text-white">{total}</span>
-				</li>
-			{/each}
-		</ul>
+<div class="grid  gap-x-4 grid-cols-[auto_1fr] grid-rows-4 text-2xl bg-slate-600">
+	<div class="col-start-1 row-span-4 row-start-1">
+		<DeckMeta {deck} />
 	</div>
-    <div class="col-start-2 row-start-1 bg-stone-200 border"></div>
-    <div class="col-start-2 row-start-2 bg-stone-200 border"></div>
-    <div class="col-start-2 row-start-3 bg-stone-200 border"></div>
-    <div class="col-start-2 row-start-4 bg-stone-200 border"></div>
+
+	{#each suites as { row, cards }}
+		<div  class="col-start-2 bg-slate-800 p-1 {row}">
+			<CardRowDetail on:addHand {cards} />
+		</div>
+	{/each}
 </div>

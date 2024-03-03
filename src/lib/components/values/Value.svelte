@@ -12,6 +12,7 @@
 	import Eight from "./Eight.svelte";
 	import Nine from "./Nine.svelte";
 	import Ten from "./Ten.svelte";
+	import Face from "./Face.svelte";
 
 	export let card: Card
 	let { value, suite } = card;
@@ -26,11 +27,11 @@
 		'8': Eight,
 		'9': Nine,
 		'10': Ten,
-		'J': Two,
-		'Q': Two,
-		'K': Two,
+		'J': Face,
+		'Q': Face,
+		'K': Face,
 		'A': Ace
 	};
 </script>
 
-<svelte:component this={valueMap[value]} suite={suite} />
+<svelte:component this={valueMap[value]} {suite} {value}/>

@@ -18,6 +18,17 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      data: {
+        'xs': 'size~="xs"',
+        'sm': 'size~="sm"',
+        'md': 'size~="md"',
+        'lg': 'size~="lg"',
+        'selected': 'state~="selected"',
+        'unselected': 'state~="unselected"',
+        'discarded': 'state~="discarded"',
+        'hand': 'state~="hand"',
+        'deck': 'state~="deck"',
+      },
       aspectRatio: {
         '2/3': '2/3'
       },
