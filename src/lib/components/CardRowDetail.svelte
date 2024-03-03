@@ -3,13 +3,13 @@
 	import CardComponent from '$lib/components/Card.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	const dispatch = createEventDispatcher<{ addHand: Card }>();
+	const dispatch = createEventDispatcher<{ addHand: string }>();
 
 	export let cards: Card[];
 
 	const doubleClick = (discarded: boolean, card: Card) => {
 		if (discarded) return;
-		dispatch('addHand', card);
+		dispatch('addHand', card.id);
 	}
 </script>
 
