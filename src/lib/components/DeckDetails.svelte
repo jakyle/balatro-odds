@@ -7,9 +7,6 @@
 	export let deck: Deck;
 
 	$: discards = deck.discard;
-
-	const hasSameCard = (card: Card) => discards.some(discard => discard.suite === card.suite && discard.value === card.value);
-
 	$: suites = [
 		{
 			row: 'row-start-1',
@@ -38,7 +35,7 @@
 
 	{#each suites as { row, cards }}
 		<div  class="col-start-2 bg-slate-800 p-1 {row}">
-			<CardRowDetail on:addHand {cards} />
+			<CardRowDetail on:discard on:returnToDeck on:addHand {cards} />
 		</div>
 	{/each}
 </div>

@@ -19,6 +19,8 @@
 </script>
 
 <div
+	role="img"
+	aria-label="{card.value} of {suite}"
 	data-size={size}
 	class="flex @container aspect-2/3 data-xs:w-20 data-sm:w-36 data-md:w-52 data-lg:w-96 rounded-lg bg-white shadow transition-all {suiteColor[suite]}"
 >

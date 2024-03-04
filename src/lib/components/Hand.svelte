@@ -4,9 +4,9 @@
 	import { createEventDispatcher } from 'svelte';
 
 	type HandEvents = { 
-		removeCard: number, 
+		removeCard: string, 
 		selectCard: { selected: boolean, 
-			idx: number 
+			id: string 
 		}
 	}
 
@@ -16,17 +16,17 @@
 </script>
 
 <div class="flex items-center justify-center bg-teal-800 rounded-lg px-4 py-2 min-w-5/10 max-w-screen-2xl flex-wrap gap-2 relative">
-	{#each cards as { card, selected }, idx}
+	{#each cards as { card, selected } }
 		<button 
-			on:click={() => dispatch('selectCard', { selected: !selected, idx })} 
+			on:click={() => dispatch('selectCard', { selected: !selected, id: card.id })} 
 			data-state={selected ? 'selected' : 'unselected'}
-			class="hover:z-10 relative group hover:shadow-xl data-selected:bottom-10 data-selected:scale-105 data-unselected:hover:scale-105 data-selected:hover:scale-110"
+			class="hover:z-10 focus:z-10 relative group hover:shadow-xl focus:shadow-xl data-selected:bottom-10 data-selected:scale-105 data-unselected:hover:scale-105 data-selected:hover:scale-110 overflow-hidden"
 		>
 			<button 
 				data-state={selected ? 'selected' : 'unselected'}
-				on:click={() => dispatch('removeCard', idx)}
-				class="data-selected:group-hover:hidden absolute data-unselected:group-hover:block hidden -top-4 -right-4 rounded-full p-2 text-lg bg-red-200 z-10">
-				❌
+				on:click|stopPropagation={() => dispatch('removeCard', card.id)}
+				class="text-white data-selected:group-hover:hidden w-full absolute data-unselected:group-hover:block data-unselected:group-focus:block hidden -bottom-20 group-focus:bottom-0 group-hover:bottom-0 hover:bg-neutral-600 p-2 text-xl font-bold bg-neutral-600/65 z-10">
+				TO DECK
 			</button>
 			<CardComponent {card} size="sm"/>
 		</button>

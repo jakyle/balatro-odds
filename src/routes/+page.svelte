@@ -17,37 +17,53 @@
 		hand = [...hand, { card, selected: false }];
 	};
 
-	const removeFromHand = (idx: CustomEvent<number>) => {
-		hand = hand.filter((_, i) => i !== idx.detail);
+	const removeFromHand = ({detail: id}: CustomEvent<string>) => {
+		deck.cards.find((card) => card.id === id)!.state = 'deck';
+		hand = hand.filter(({card}) => card.id !== id);
+		deck = deck;
 	};
 
-	const selectCard = (select: CustomEvent<{ selected: boolean; idx: number }>) => {
-		hand = hand.map((card, idx) =>
-			idx === select.detail.idx ? { ...card, selected: select.detail.selected } : card
+	const selectCard = ({detail: { selected, id }}: CustomEvent<{ selected: boolean; id: string }>) => {
+		hand = hand.map((cardHand) =>
+			cardHand.card.id === id ? { ...cardHand, selected: selected } : cardHand
 		);
 	};
 
+	const discardCard = ({detail: id}: CustomEvent<string>) => {
+		console.log('discarding');
+		const card = deck.cards.find((c) => c.id === id)!;
+		console.log(card);
+		card.state = 'discarded';
+		deck = deck;
+		hand = hand.filter((card) => card.card.id !== id);
+	}
+
 	const discardHand = () => {
-		deck.discard = [
-			...deck.discard,
-			...hand.filter((card) => card.selected).map((card) => card.card)
-		];
+		const discarded = hand.filter((card) => card.selected).map((card) => card.card);
+
+		deck.cards.forEach((card) => {
+			if (discarded.some((d) => d.id === card.id)) {
+				card.state = 'discarded';
+			}
+		});
+
 		hand = hand.filter((card) => !card.selected);
 		deck = deck;
 	};
 </script>
 
 <div class="relative flex h-screen w-screen flex-col items-center justify-center gap-8 bg-teal-500">
-	<DeckDetails on:addHand={addToHand} {deck} />
+	<DeckDetails on:addHand={addToHand} on:discard={discardCard} on:returnToDeck={removeFromHand} {deck} />
 
-	<Hand on:selectCard={selectCard} on:removeCard={removeFromHand} cards={hand} />
+	<Hand on:selectCard={selectCard} on:discard={discardHand} on:removeCard={removeFromHand} cards={hand} />
 
 	<div class="flex gap-2">
 		<button
 			on:click={discardHand}
 			{disabled}
-			class="flex items-center justify-center rounded-lg bg-red-700 px-6 py-3 text-4xl text-white disabled:pointer-events-auto disabled:bg-neutral-200/80"
-			>DISCARD</button
+			class="flex items-center justify-center rounded-lg bg-red-700 px-6 py-3 text-4xl text-white disabled:pointer-events-auto disabled:bg-neutral-200/80">
+				DISCARD
+			</button
 		>
 	</div>
 </div>
