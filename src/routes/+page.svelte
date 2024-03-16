@@ -3,6 +3,7 @@
 	import Hand from '$lib/components/Hand.svelte';
 	import type { Card, HandCard } from '$lib/models/card';
 	import { getDeck } from '$lib/util/decks';
+	import { screen } from '$lib/store/windowWidth';
 
 	let deck = getDeck('Red');
 
@@ -30,9 +31,7 @@
 	};
 
 	const discardCard = ({detail: id}: CustomEvent<string>) => {
-		console.log('discarding');
 		const card = deck.cards.find((c) => c.id === id)!;
-		console.log(card);
 		card.state = 'discarded';
 		deck = deck;
 		hand = hand.filter((card) => card.card.id !== id);
@@ -50,6 +49,8 @@
 		hand = hand.filter((card) => !card.selected);
 		deck = deck;
 	};
+
+	$: console.log($screen);
 </script>
 
 <div class="relative flex h-screen w-screen flex-col items-center justify-center gap-8 bg-teal-500">
@@ -61,9 +62,8 @@
 		<button
 			on:click={discardHand}
 			{disabled}
-			class="flex items-center justify-center rounded-lg bg-red-700 px-6 py-3 text-4xl text-white disabled:pointer-events-auto disabled:bg-neutral-200/80">
+			class="flex items-center justify-center rounded-lg bg-red-700 px-6 py-3 text-2xl text-white disabled:pointer-events-auto disabled:bg-neutral-200/80">
 				DISCARD
-			</button
-		>
+		</button>
 	</div>
 </div>

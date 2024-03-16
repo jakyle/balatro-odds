@@ -31,6 +31,6 @@
 			<CardComponent {card} size="sm"/>
 		</button>
 	{:else} 
-		<p class="text-6xl text-center text-white animate-pulse py-3">No cards in hand, double click card above to add to hand</p>
+		<p class="text-4xl text-center text-white animate-pulse py-3">Empty Hand</p>
 	{/each}
 </div>

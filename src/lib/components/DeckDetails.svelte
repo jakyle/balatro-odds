@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Card } from '$lib/models/card';
 	import type { Deck } from '$lib/models/deck';
 	import CardRowDetail from './CardRowDetail.svelte';
 	import DeckMeta from './DeckMeta.svelte';
@@ -8,34 +7,20 @@
 
 	$: discards = deck.discard;
 	$: suites = [
-		{
-			row: 'row-start-1',
-			cards: deck.cardsBySuite('spades')
-		},
-		{
-			row: 'row-start-2',
-			cards: deck.cardsBySuite('hearts')
-		},
-		{
-			row: 'row-start-3',
-			cards: deck.cardsBySuite('clubs')
-		},
-		{
-			row: 'row-start-4',
-			cards: deck.cardsBySuite('diamonds')
-		} 
+		deck.cardsBySuite('spades'),
+		deck.cardsBySuite('hearts'),
+		deck.cardsBySuite('clubs'),
+		deck.cardsBySuite('diamonds')
 	];
 </script>
 
 
-<div class="grid  gap-x-4 grid-cols-[auto_1fr] grid-rows-4 text-2xl bg-slate-600">
-	<div class="col-start-1 row-span-4 row-start-1">
-		<DeckMeta {deck} />
-	</div>
+<div class="flex bg-slate-600">
+	<DeckMeta {deck} />
 
-	{#each suites as { row, cards }}
-		<div  class="col-start-2 bg-slate-800 p-1 {row}">
+	<div  class="flex flex-col gap-y-2 px-2 py-3">
+		{#each suites as  cards }
 			<CardRowDetail on:discard on:returnToDeck on:addHand {cards} />
-		</div>
-	{/each}
+		{/each}
+	</div>
 </div>
