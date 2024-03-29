@@ -1,9 +1,8 @@
 <script lang="ts">
 	import DeckDetails from '$lib/components/DeckDetails.svelte';
 	import Hand from '$lib/components/Hand.svelte';
-	import type { Card, HandCard } from '$lib/models/card';
+	import type { HandCard } from '$lib/models/card';
 	import { getDeck } from '$lib/util/decks';
-	import { screen } from '$lib/store/windowWidth';
 
 	let deck = getDeck('Red');
 
@@ -50,20 +49,32 @@
 		deck = deck;
 	};
 
-	$: console.log($screen);
+	const resetHand = () => { 
+		hand.forEach((card) => card.selected = false);
+		hand = hand;
+	}
 </script>
 
-<div class="relative flex h-screen w-screen flex-col items-center justify-center gap-8 bg-teal-500">
+<div class="relative flex h-screen w-screen flex-col items-center justify-center gap-4 bg-teal-500 overflow-y-auto">
 	<DeckDetails on:addHand={addToHand} on:discard={discardCard} on:returnToDeck={removeFromHand} {deck} />
 
-	<Hand on:selectCard={selectCard} on:discard={discardHand} on:removeCard={removeFromHand} cards={hand} />
+	
+	<div class="left-x flex gap-2 items-center">
+		<Hand on:selectCard={selectCard} on:discard={discardHand} on:removeCard={removeFromHand} cards={hand} />
+		<div data-display={hand.length > 0 ? 'flex' : 'hidden'} class="data-flex:flex data-hidden:hidden flex-col gap-y-2">
+			<button
+				on:click={discardHand}
+				{disabled}
+				class="flex flex-none items-center justify-center rounded-lg bg-red-600 px-6 py-4 text-lg text-white disabled:pointer-events-auto disabled:bg-neutral-200/80">
+					DISCARD
+			</button>
 
-	<div class="flex gap-2">
-		<button
-			on:click={discardHand}
-			{disabled}
-			class="flex items-center justify-center rounded-lg bg-red-700 px-6 py-3 text-2xl text-white disabled:pointer-events-auto disabled:bg-neutral-200/80">
-				DISCARD
-		</button>
+			<button
+				on:click={resetHand}
+				{disabled}
+				class="flex flex-none items-center justify-center rounded-lg bg-yellow-600 px-6 py-4 text-lg text-white disabled:pointer-events-auto disabled:bg-neutral-200/80">
+					RESET
+			</button>
+		</div>
 	</div>
 </div>

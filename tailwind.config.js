@@ -1,3 +1,12 @@
+import plugin from 'tailwindcss/plugin'
+
+const degrees = Array.from({
+  length: 24
+}, (_, i) => i * 15).reduce(
+  (acc, curr) => ({
+    ...acc,
+    [curr]: `${curr}deg`
+  }), {})
 
 const tenths = Array.from({
   length: 9
@@ -30,6 +39,9 @@ export default {
         'discarded': 'state~="discarded"',
         'hand': 'state~="hand"',
         'deck': 'state~="deck"',
+        'hidden': 'display~="hidden"',
+        'block': 'display~="block"',
+        'flex': 'display~="flex"',
       },
       aspectRatio: {
         '2/3': '2/3'
@@ -52,5 +64,28 @@ export default {
   },
   plugins: [
     require('@tailwindcss/container-queries'),
+    plugin(({
+        theme,
+        matchUtilities,
+      }) => {
+      matchUtilities({
+        angle: (value) => ({
+          '--angle': value,
+        }),
+      }, {
+        values: degrees
+      })
+
+      matchUtilities({
+        perimeter: (value) => ({
+          '--x': `calc(${value} * cos(var(--angle, 0deg)))`,
+          '--y': `calc(${value} * sin(var(--angle, 0deg)))`,
+          left: 'var(--x, 1)',
+          top: 'var(--y, 1)',
+        }),
+      }, {
+        values: theme('size')
+      })
+    })
   ],
 }

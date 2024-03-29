@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+	--width: 1;
+	--scale: 1;
+	--w: var(--width) * var(--scale, 1); 
+	--r: calc((var(--w) - var(--size)) /2); 
+	--size: 1rem;
+}
