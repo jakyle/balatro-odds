@@ -23,23 +23,16 @@
 		dispatch('selectCard', dataset.id!);
 	};
 
-	const doubleClick = ({ id, state }: Card) => {
-		if (state === 'deck') {
-			dispatch('addHand', id);
-		}
-
-		if (state === 'hand' || state === 'discarded') {
-			dispatch('returnToDeck', id);
-		}
-	};
 </script>
 
 <ul class="flex w-full gap-x-1">
 	{#each cards as card}
 		<li>
-			<div
+			<button
+				on:click={click}
 				data-state={card.state}
-				class="group relative isolate overflow-hidden hover:scale-105 hover:shadow-xl data-discarded:opacity-25 data-hand:opacity-80"
+				data-id={card.id}
+				class="group relative isolate hover:scale-105 hover:shadow-xl data-discarded:opacity-25 data-hand:opacity-80"
 			>
 				<div
 					class="absolute left-0 top-0 z-10 hidden size-full items-center justify-center group-data-hand:flex"
@@ -47,31 +40,8 @@
 					<HandIcon class="size-full" />
 				</div>
 
-				<!-- <button
-					on:click|stopPropagation={() => dispatch('discard', card.id)}
-					class="w-full absolute group-data-discarded:hidden -top-20 group-focus:top-0 left-0 group-hover:top-0 hover:bg-neutral-600 p-1 font-bold bg-neutral-600/50 z-50 transition-all"
-				>
-					DISCARD
-				</button>
-
-				<button
-					on:click|stopPropagation={() => dispatch('addHand', card.id)}
-					class="w-full absolute group-data-hand:hidden -bottom-20 group-data-discarded:bottom-auto group-data-discarded:-top-20 group-data-discarded:group-focus:top-0 group-focus:bottom-0 left-0 group-data-discarded:hover:top-0 group-hover:bottom-0 hover:bg-neutral-600 p-2 font-bold bg-neutral-600/50 z-20 transition-all"
-				>
-					HAND
-				</button>
-
-				<button
-					on:click|stopPropagation={() => dispatch('returnToDeck', card.id)}
-					class="w-full absolute group-data-deck:hidden -bottom-20 group-focus:bottom-0 left-0 group-hover:bottom-0 hover:bg-neutral-600 p-2 font-bold bg-neutral-600/50 z-20 transition-all"
-				>
-					DECK
-				</button> -->
-
-				<button data-id={card.id} on:click={click}>
-					<CardComponent {card} size="xs" />
-				</button>
-			</div>
+				<CardComponent {card} size="xs" />
+			</button>
 		</li>
 	{/each}
 </ul>
