@@ -67,6 +67,7 @@ export default {
     plugin(({
         theme,
         matchUtilities,
+        addVariant
       }) => {
       matchUtilities({
         angle: (value) => ({
@@ -75,6 +76,8 @@ export default {
       }, {
         values: degrees
       })
+
+      addVariant('backdrop', '&::backdrop')
 
       matchUtilities({
         perimeter: (value) => ({

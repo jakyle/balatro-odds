@@ -23,36 +23,39 @@ export class Deck {
 		return result as unknown as [Suite, number][];
 	}
 
-	public get aceTotal() {
+	public get aceTotal(): number {
 		return this.cards.filter(card => card.value === 'A').length;
 	}
 
-	public get faceTotal() {
+	public get faceTotal(): number {
 		return this.cards.filter(card => ['K', 'Q', 'J'].includes(card.value)).length;
 	}
 
-	public get numberTotal() {
+	public get numberTotal(): number {
 		return this.cards.filter(card => !isNaN(parseInt(card.value))).length;
 	}
 
-	public get spadesTotal() {
+	public get spadesTotal(): number {
 		return this.cards.filter(card => card.suite === 'spades').length;
 	}
 
-	public get heartsTotal() {
+	public get heartsTotal(): number {
 		return this.cards.filter(card => card.suite === 'hearts').length;
 	}
 
-	public get diamondsTotal() {
+	public get diamondsTotal(): number {
 		return this.cards.filter(card => card.suite === 'diamonds').length;
 	}
 
-	public get clubsTotal() {
+	public get clubsTotal(): number {
 		return this.cards.filter(card => card.suite === 'clubs').length;
 	}
 
-	public cardsBySuite(suite: Suite) {
+	public cardsBySuite(suite: Suite): Card[] {
 		return this.cards.filter(card => card.suite === suite);
+	}
 
+	public getById(id: string): Card | undefined {
+		return this.cards.find(card => card.id === id);
 	}
 }

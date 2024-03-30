@@ -1,22 +1,27 @@
 <script lang="ts">
-	import type { Card } from "$lib/models/card";
+	import type { Card } from '$lib/models/card';
 	import CardComponent from '$lib/components/Card.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import HandIcon from "./icons/HandIcon.svelte";
+	import HandIcon from './icons/HandIcon.svelte';
 
 	type CardRowDetailEvents = {
 		addHand: string;
 		returnToDeck: string;
 		discard: string;
-	}
+		selectCard: string;
+	};
 
 	const dispatch = createEventDispatcher<CardRowDetailEvents>();
 
 	export let cards: Card[];
 
-	const click = () => {
-		console.log('clicked');
-	}
+	const click = ({
+		currentTarget: { dataset }
+	}: MouseEvent & {
+		currentTarget: EventTarget & HTMLButtonElement;
+	}) => {
+		dispatch('selectCard', dataset.id!);
+	};
 
 	const doubleClick = ({ id, state }: Card) => {
 		if (state === 'deck') {
@@ -26,21 +31,23 @@
 		if (state === 'hand' || state === 'discarded') {
 			dispatch('returnToDeck', id);
 		}
-	}
+	};
 </script>
 
-<ul class="w-full flex gap-x-1">
+<ul class="flex w-full gap-x-1">
 	{#each cards as card}
 		<li>
 			<div
 				data-state={card.state}
-				class="data-hand:opacity-80 group data-discarded:opacity-25 hover:shadow-xl hover:scale-105 relative isolate overflow-hidden"
+				class="group relative isolate overflow-hidden hover:scale-105 hover:shadow-xl data-discarded:opacity-25 data-hand:opacity-80"
 			>
-				<div class="group-data-hand:flex hidden absolute top-0 left-0 size-full items-center justify-center z-10">
+				<div
+					class="absolute left-0 top-0 z-10 hidden size-full items-center justify-center group-data-hand:flex"
+				>
 					<HandIcon class="size-full" />
 				</div>
 
-				<button
+				<!-- <button
 					on:click|stopPropagation={() => dispatch('discard', card.id)}
 					class="w-full absolute group-data-discarded:hidden -top-20 group-focus:top-0 left-0 group-hover:top-0 hover:bg-neutral-600 p-1 font-bold bg-neutral-600/50 z-50 transition-all"
 				>
@@ -59,9 +66,11 @@
 					class="w-full absolute group-data-deck:hidden -bottom-20 group-focus:bottom-0 left-0 group-hover:bottom-0 hover:bg-neutral-600 p-2 font-bold bg-neutral-600/50 z-20 transition-all"
 				>
 					DECK
-				</button>
+				</button> -->
 
-				<CardComponent {card} size="xs"/>
+				<button data-id={card.id} on:click={click}>
+					<CardComponent {card} size="xs" />
+				</button>
 			</div>
 		</li>
 	{/each}
